@@ -1,0 +1,22 @@
+name: 同步ql_static_v2.2.0
+on:
+  schedule:
+    - cron: '0 */1 * * *'
+  workflow_dispatch:
+jobs:
+  merge-branch:
+    env:
+      PAT: ${{ secrets.PAT }}
+    runs-on: ubuntu-latest
+    steps:    
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false          
+      - name: sync scripts
+        uses: repo-sync/github-sync@v2
+        if: env.PAT
+        with:
+          source_repo: "https://github.com/whyour/qinglong-static.git"
+          source_branch: "v2.2.0"
+          destination_branch: "v2.2.0"
+          github_token: ${{ secrets.PAT }}
